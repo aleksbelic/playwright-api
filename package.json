@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test --project=API",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "pretty": "npx prettier . --write"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,7 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.54.1",
-    "@types/node": "^24.1.0"
+    "@types/node": "^24.1.0",
+    "prettier": "3.6.2"
   }
 }
