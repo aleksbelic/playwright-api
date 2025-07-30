@@ -6,7 +6,7 @@ test.beforeAll(async ({ playwright }) => {
   apiContext = await playwright.request.newContext();
 });
 
-test(`GET /posts/:id`, async ({}) => {
+test('GET /posts/:id returns 200', async ({}) => {
   const response = await apiContext.get('/posts/1');
 
   expect(response.status()).toBe(200);
@@ -23,6 +23,11 @@ test(`GET /posts/:id`, async ({}) => {
     'body',
     'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
   );
+});
+
+test('GET /posts/:id returns 404', async ({}) => {
+  const response = await apiContext.get('/posts/0');
+  expect(response.status()).toBe(404);
 });
 
 test.afterAll(async () => {

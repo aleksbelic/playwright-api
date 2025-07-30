@@ -6,7 +6,7 @@ test.beforeAll(async ({ playwright }) => {
   apiContext = await playwright.request.newContext();
 });
 
-test(`GET /comments/:id`, async ({}) => {
+test('GET /comments/:id returns 200', async ({}) => {
   const response = await apiContext.get('/comments/1');
 
   expect(response.status()).toBe(200);
@@ -21,6 +21,11 @@ test(`GET /comments/:id`, async ({}) => {
     'body',
     'laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium'
   );
+});
+
+test('GET /comments/:id returns 404', async ({}) => {
+  const response = await apiContext.get('/comments/0');
+  expect(response.status()).toBe(404);
 });
 
 test.afterAll(async () => {
