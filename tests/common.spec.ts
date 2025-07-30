@@ -9,7 +9,7 @@ test.beforeAll(async ({ playwright }) => {
 const paths = ['/posts', '/comments', '/albums', '/photos', '/todos', '/users'];
 
 for (const path of paths) {
-  test(`GET ${path} returns 200`, async ({}) => {
+  test(`GET ${path} returns 200`, async () => {
     const response = await apiContext.get(path);
     expect(response.status()).toBe(200);
   });
