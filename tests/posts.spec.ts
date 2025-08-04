@@ -89,6 +89,46 @@ test('GET /posts/:id/comments returns 200', async () => {
   });
 });
 
+test('POST /posts returns 201', async () => {
+  const response = await apiContext.post('/posts', {
+    data: {
+      userId: 1,
+      title: 'foo',
+      body: 'bar',
+    },
+  });
+
+  expect(response.status()).toBe(201);
+  expect(response.headers()['content-type']).toContain('application/json');
+
+  expect(await response.json()).toEqual({
+    id: 101,
+    userId: 1,
+    title: 'foo',
+    body: 'bar',
+  });
+});
+
+test('PUT /posts/:id returns 200', async () => {
+  const response = await apiContext.put('/posts/1', {
+    data: {
+      userId: 222,
+      //title: 'foo', // removes "title" prop if not included
+      body: 'bar222',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toContain('application/json');
+
+  expect(await response.json()).toEqual({
+    id: 1,
+    userId: 222,
+    //title: 'foo', // should not exist if skipped in payload
+    body: 'bar222',
+  });
+});
+
 test.afterAll(async () => {
   await apiContext.dispose();
 });
