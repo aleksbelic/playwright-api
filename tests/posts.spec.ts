@@ -90,11 +90,15 @@ test('GET /posts/:id/comments returns 200', async () => {
 });
 
 test('POST /posts returns 201', async () => {
+  const newUserId = 1;
+  const newTitle = 'foo';
+  const newBody = 'bar';
+
   const response = await apiContext.post('/posts', {
     data: {
-      userId: 1,
-      title: 'foo',
-      body: 'bar',
+      userId: newUserId,
+      title: newTitle,
+      body: newBody,
     },
   });
 
@@ -103,18 +107,21 @@ test('POST /posts returns 201', async () => {
 
   expect(await response.json()).toEqual({
     id: 101,
-    userId: 1,
-    title: 'foo',
-    body: 'bar',
+    userId: newUserId,
+    title: newTitle,
+    body: newBody,
   });
 });
 
 test('PUT /posts/:id returns 200', async () => {
+  const newUserId = 222;
+  const newBody = 'bar222';
+
   const response = await apiContext.put('/posts/1', {
     data: {
-      userId: 222,
+      userId: newUserId,
       //title: 'foo', // removes "title" prop if not included
-      body: 'bar222',
+      body: newBody,
     },
   });
 
@@ -123,9 +130,31 @@ test('PUT /posts/:id returns 200', async () => {
 
   expect(await response.json()).toEqual({
     id: 1,
-    userId: 222,
+    userId: newUserId,
     //title: 'foo', // should not exist if skipped in payload
-    body: 'bar222',
+    body: newBody,
+  });
+});
+
+test('PATCH /posts/:id returns 200', async () => {
+  const newTitle = 'foo222';
+
+  const response = await apiContext.patch('/posts/1', {
+    data: {
+      //userId: 222, // skips "userId" prop if not included
+      title: newTitle,
+      //body: 'bar222', // skips "body" prop if not included
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toContain('application/json');
+
+  expect(await response.json()).toEqual({
+    id: 1,
+    userId: 1,
+    title: newTitle,
+    body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
   });
 });
 
